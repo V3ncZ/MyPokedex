@@ -32,5 +32,25 @@ namespace MyPokedex.Services
 
             return pokemon!;
         }
+
+        public async Task<PokemonListResponse> GetPokemonListAsync(int page = 1, int pageSize = 50)
+        {
+            int offset = (page - 1) * pageSize;
+            var url = $"{_baseUrl}pokemon?limit={pageSize}&offset={offset}";
+
+            var response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            var pokemonList = JsonSerializer.Deserialize<PokemonListResponse>(jsonString, options);
+
+            return pokemonList!;
+        }
     }
 }
