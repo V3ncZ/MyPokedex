@@ -12,7 +12,7 @@ namespace MyPokedex.Models
         public int Height { get; set; }
         public int Weight { get; set; }
         public List<PokemonAbilities> Abilities { get; set; }
-        public List<PokemonSprites> Sprites { get; set; }
+        public PokemonSprites Sprites { get; set; }
 
     }
 }

@@ -1,7 +1,14 @@
+using MyPokedex.Models;
+using MyPokedex.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddHttpClient<PokeApiService>(client =>
+{
+    client.BaseAddress = new Uri("https://pokeapi.co/api/v2/");
+});
 
 var app = builder.Build();
 
@@ -21,5 +28,19 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapRazorPages();
+
+app.MapGet("/api/pokemon/{name}", async (string name, PokeApiService service) =>
+{
+    try
+    {
+        var result = await service.GetPokemonAsync(name);
+        return Results.Ok(result);
+    }
+    catch (HttpRequestException ex)
+    {
+        return Results.Problem($"Erro ao buscar o Pokémon: {ex.Message}");
+    }
+});
+
 
 app.Run();

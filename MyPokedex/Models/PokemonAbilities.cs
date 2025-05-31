@@ -1,7 +1,9 @@
-﻿namespace MyPokedex.Models
+﻿using System.Text.Json.Serialization;
+
+namespace MyPokedex.Models
 {
     public class PokemonAbilities
     {
-        public string Name { get; set; }
+        public PokemonAbilityDetail Ability { get; set; }
     }
 }
